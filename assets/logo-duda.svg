@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 150" role="img" aria-labelledby="title desc">
+  <title id="title">Duda Espaço &amp; Eventos</title>
+  <desc id="desc">Símbolo em arcos e assinatura tipográfica da marca Duda.</desc>
+  <g transform="translate(8 8)" fill="none" stroke="#ef765f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 85C12 47 34 16 64 16s52 31 52 69"/>
+    <path d="M28 85c0-29 15-53 36-53s36 24 36 53"/>
+    <path d="M44 85c0-20 8-36 20-36s20 16 20 36"/>
+    <path d="M16 101h96M33 118h62"/>
+    <circle cx="64" cy="87" r="7" fill="#3158c8" stroke="none"/>
+  </g>
+  <text x="150" y="78" fill="#172039" font-family="Georgia, 'Times New Roman', serif" font-size="72" letter-spacing="-4">Duda</text>
+  <text x="154" y="112" fill="#6d7180" font-family="Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="5">ESPAÇO &amp; EVENTOS</text>
+</svg>
