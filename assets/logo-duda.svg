@@ -1,13 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 150" role="img" aria-labelledby="title desc">
-  <title id="title">Duda Espaço &amp; Eventos</title>
-  <desc id="desc">Símbolo em arcos e assinatura tipográfica da marca Duda.</desc>
-  <g transform="translate(8 8)" fill="none" stroke="#ef765f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 85C12 47 34 16 64 16s52 31 52 69"/>
-    <path d="M28 85c0-29 15-53 36-53s36 24 36 53"/>
-    <path d="M44 85c0-20 8-36 20-36s20 16 20 36"/>
-    <path d="M16 101h96M33 118h62"/>
-    <circle cx="64" cy="87" r="7" fill="#3158c8" stroke="none"/>
-  </g>
-  <text x="150" y="78" fill="#172039" font-family="Georgia, 'Times New Roman', serif" font-size="72" letter-spacing="-4">Duda</text>
-  <text x="154" y="112" fill="#6d7180" font-family="Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="5">ESPAÇO &amp; EVENTOS</text>
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" role="img" aria-labelledby="title desc">
+<title id="title">Duda Festas e Eventos</title><desc id="desc">Identidade visual Duda Festas e Eventos em vermelho profundo, carvão e dourado fosco.</desc>
+<defs><filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="2" flood-color="#21150f" flood-opacity=".22"/></filter></defs>
+<g filter="url(#shadow)" stroke="#21150f" stroke-linejoin="round" stroke-linecap="round">
+<path d="M270 45 280 15l20 25 23-34 17 38 31-18-8 47H258z" fill="#b89b63" stroke-width="9"/>
+<path d="M55 86c-1-28 23-45 48-36 23 8 31 34 17 55-10 15-28 22-46 13-12-6-19-17-19-32z" fill="#ad2932" stroke-width="8"/><path d="M65 139c-2-23 17-37 37-30 20 7 25 29 13 46-9 12-24 17-38 9-8-5-12-14-12-25z" fill="#ad2932" stroke-width="8"/><path d="M540 86c1-28-23-45-48-36-23 8-31 34-17 55 10 15 28 22 46 13 12-6 19-17 19-32z" fill="#ad2932" stroke-width="8"/><path d="M530 139c2-23-17-37-37-30-20 7-25 29-13 46 9 12 24 17 38 9 8-5 12-14 12-25z" fill="#ad2932" stroke-width="8"/>
+<path d="M89 179c47 30 91 37 231 37s186-7 231-37" fill="none" stroke="#ad2932" stroke-width="12"/>
+<text x="320" y="150" text-anchor="middle" fill="#ad2932" stroke="#21150f" stroke-width="19" paint-order="stroke" font-family="Trebuchet MS,Arial,sans-serif" font-size="112" font-style="italic" font-weight="1000" letter-spacing="-9">duda</text>
+<text x="320" y="150" text-anchor="middle" fill="#ad2932" stroke="#f7f4ef" stroke-width="10" paint-order="stroke" font-family="Trebuchet MS,Arial,sans-serif" font-size="112" font-style="italic" font-weight="1000" letter-spacing="-9">duda</text>
+<path d="M120 166q200 31 400 0v39q-200 38-400 0z" fill="#21150f" stroke-width="5"/>
+<text x="320" y="199" text-anchor="middle" fill="#fff" stroke="none" font-family="Trebuchet MS,Arial,sans-serif" font-size="31" font-style="italic" font-weight="900" letter-spacing="1">festas e eventos</text>
+</g><g fill="none" stroke="#ad2932" stroke-width="7" stroke-linecap="round"><path d="M35 60l-9-13m41-18L64 13m510 47 9-13m-41-18 3-16"/></g>
 </svg>
+

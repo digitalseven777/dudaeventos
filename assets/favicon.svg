@@ -1,10 +1,2 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="16" fill="#172039"/>
-  <g fill="none" stroke="#ef765f" stroke-width="3" stroke-linecap="round">
-    <path d="M10 39.5C10 23.2 19.4 10 32 10s22 13.2 22 29.5"/>
-    <path d="M17 39.5C17 27.1 23.2 17 32 17s15 10.1 15 22.5"/>
-    <path d="M24 39.5c0-8.5 3-15.5 8-15.5s8 7 8 15.5"/>
-    <path d="M12 46h40M19 53h26"/>
-  </g>
-  <circle cx="32" cy="40" r="3.3" fill="#fff"/>
-</svg>
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#f7f4ef"/><path d="M15 26c-1-9 7-14 14-11 6 3 8 10 4 16-3 5-8 7-13 4-3-2-5-5-5-9m34 0c1-9-7-14-14-11-6 3-8 10-4 16 3 5 8 7 13 4 3-2 5-5 5-9" fill="#ad2932" stroke="#21150f" stroke-width="3"/><path d="M28 13 31 6l5 6 6-6 3 9H27z" fill="#b89b63" stroke="#21150f" stroke-width="2"/><text x="32" y="48" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" font-weight="900" font-style="italic" fill="#ad2932" stroke="#21150f" stroke-width="1" paint-order="stroke">Duda</text></svg>
+
