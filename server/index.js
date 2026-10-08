@@ -253,6 +253,7 @@ function serveFile(response, file, contentType) {
     "/assets/galeria/patio-coberto-02.jpg": ["assets/galeria/patio-coberto-02.jpg", "image/jpeg"],
     "/assets/galeria/patio-churrasqueira.jpg": ["assets/galeria/patio-churrasqueira.jpg", "image/jpeg"],
     "/assets/galeria/patio-circulacao.jpg": ["assets/galeria/patio-circulacao.jpg", "image/jpeg"],
+    "/assets/galeria/cozinha.jpg": ["assets/galeria/cozinha.jpg", "image/jpeg"],
   };
   const adminFiles = {
     "/admin.css": ["admin.css", "text/css; charset=utf-8"], "/admin.js": ["admin.js", "text/javascript; charset=utf-8"],
