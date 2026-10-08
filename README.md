@@ -1,34 +1,35 @@
-# Duda Festas e Eventos
+﻿# Duda Festas e Eventos
 
-Landing page responsiva em HTML, CSS e JavaScript puro, reconstruída conforme o layout de referência aprovado.
+Site público com um centro de controle privado para leads, eventos, agenda e financeiro opcional.
 
-## Como abrir
+## Iniciar localmente
 
-1. Abra esta pasta no VS Code.
-2. Abra `index.html` no navegador ou use a extensão Live Server.
-3. Não é necessário instalar dependências.
+Requer Node.js 20 ou superior. No PowerShell, configure uma senha administrativa forte e uma chave aleatória de sessão com pelo menos 32 caracteres:
 
-## Primeiras alterações
+```powershell
+$env:ADMIN_PASSWORD = "defina-uma-senha-forte"
+$env:SESSION_SECRET = "defina-uma-chave-aleatoria-de-32-caracteres-ou-mais"
+npm start
+```
 
-- WhatsApp: edite `WHATSAPP_NUMBER` no início de `app.js`.
-- Textos, endereço, pacotes e FAQ: edite `index.html`.
-- Cores: edite as variáveis no início de `style.css`.
-- Foto principal demonstrativa: `assets/hero-demonstracao.png`. Substitua pelo ensaio real mantendo o mesmo nome.
-- Galeria: substitua os blocos `.photo` por imagens quando o ensaio estiver pronto.
-- Dados provisórios: procure por `*` e pela palavra `provisório` no conteúdo.
+Acesse o site em `http://localhost:3000` e o painel em `http://localhost:3000/admin`.
 
-## Logo
+## O que o painel permite
 
-O símbolo foi criado em SVG e está embutido no cabeçalho e rodapé. A versão completa fica em `assets/logo-duda.svg` e o favicon em `assets/favicon.svg`. A ideia visual representa um portal/arco de celebração, com linhas que sugerem movimento, encontro e acolhimento.
+- Cada envio do formulário público é gravado como lead **Nova** antes de tentar abrir o WhatsApp. Se o visitante não abrir o WhatsApp, o contato continua salvo para acompanhamento futuro.
+- Leads podem ser pesquisados, filtrados, atualizados, anotados, editados e exportados em CSV.
+- A responsável pode cadastrar no painel reservas fechadas fora do site.
+- Solicitações de lead ou cadastros manuais não bloqueiam datas automaticamente. A responsável decide quando bloquear/liberar cada data no calendário.
+- Financeiro é opcional: permite lançar receitas e despesas, vencimentos, situação de pagamento e vínculo com eventos.
 
-## Publicação
+## Publicação e armazenamento
 
-O projeto pode ser publicado diretamente na Vercel, Netlify, GitHub Pages ou Hostinger como site estático.
+O servidor salva agenda, eventos e lançamentos em arquivos JSON dentro de `data/` ou no caminho definido em `DATA_DIR`. Esse diretório está ignorado pelo Git para manter os dados dos clientes privados. Faça backup regular dos dados.
 
-## Versão provisória para análise do cliente
+A hospedagem precisa executar Node.js e oferecer armazenamento persistente; configure `ADMIN_PASSWORD`, `SESSION_SECRET` e `DATA_DIR` nas variáveis de ambiente. GitHub Pages é hospedagem estática e não executa este painel nem armazena seus leads. Em produção, use HTTPS. A sessão usa cookie `HttpOnly`, `SameSite=Strict` e `Secure` em produção.
 
-Capacidade, pacotes, preços e regras são provisórios e dependem de aprovação. A identidade visual, o formulário de qualificação e a estrutura atual foram preservados.
+## Conteúdo do site
 
-O WhatsApp ainda usa um número demonstrativo em `app.js`; o envio pelo formulário depende da configuração do número oficial.
-
-Repositório: `git@github.com:digitalseven777/dudaeventos.git`.
+- WhatsApp: `WHATSAPP_NUMBER` em `app.js`.
+- Textos, endereço, FAQ e links sociais: `index.html`.
+- Estilos públicos: `style.css`.

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="robots" content="noindex, nofollow, noarchive">
+
+  <meta name="referrer" content="no-referrer">
+
+  <title>Centro de controle | Duda Festas e Eventos</title>
+
+  <link rel="stylesheet" href="/admin.css">
+
+</head>
+
+<body>
+
+  <main id="login-view" class="login-view">
+
+    <section class="login-card">
+
+      <a class="back-link" href="/"><- Voltar ao site</a>
+
+      <p class="eyebrow">Duda Festas e Eventos</p>
+
+      <h1>Centro de controle</h1>
+
+      <p>Acesse sua área administrativa para cuidar da agenda e dos eventos.</p>
+
+      <form id="login-form">
+
+        <label for="password">Senha administrativa</label>
+
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+        <button class="primary-button" type="submit">Entrar no painel</button>
+
+        <p id="login-error" class="status" role="alert"></p>
+
+      </form>
+
+    </section>
+
+  </main>
+
+
+
+  <div id="dashboard" class="dashboard" hidden>
+
+    <aside class="sidebar">
+
+      <a class="brand" href="/admin"><span class="brand-mark">D</span><span><strong>Duda Festas</strong><small>Centro de controle</small></span></a>
+
+      <nav class="side-nav" aria-label="Secoes do painel">
+
+        <button class="nav-item active" data-view="overview" type="button"><span>D</span>Visao geral</button>
+
+        <button class="nav-item" data-view="events" type="button"><span>[]</span>Eventos e solicitacoes <i id="new-badge" class="nav-badge" hidden></i></button>
+
+        <button class="nav-item" data-view="calendar" type="button"><span>[]</span>Agenda e disponibilidade</button>
+
+        <button class="nav-item" data-view="finance" type="button"><span>R$</span>Financeiro <small class="optional-tag">Opcional</small></button>
+
+      </nav>
+
+      <div class="sidebar-bottom"><a href="/" target="_blank" rel="noopener">-> Abrir site publico</a><button id="logout-button" type="button">Sair da conta</button></div>
+
+    </aside>
+
+
+
+    <main class="main-area">
+
+      <header class="topbar"><div><p id="today-label" class="eyebrow"></p><h1 id="page-title">Visao geral</h1></div><button id="add-event-top" class="primary-button" type="button">+ Cadastrar evento</button></header>
+
+      <div id="global-status" class="global-status" role="status" aria-live="polite"></div>
+
+
+
+      <section id="view-overview" class="view-section">
+
+        <div class="welcome-card"><div><p class="eyebrow">Seu espaco, organizado</p><h2>Olá! Este  o seu painel de controle.</h2><p>Acompanhe os pedidos, organize as datas e, se quiser, registre tambem as financas dos eventos.</p></div><div class="welcome-art" aria-hidden="true">*</div></div>
+
+        <div class="metric-grid">
+
+          <article class="metric-card"><span class="metric-icon coral">@</span><div><span>Solicitacoes novas</span><strong id="metric-new">0</strong><small>Precisam de atendimento</small></div></article>
+
+          <article class="metric-card"><span class="metric-icon green">v</span><div><span>Proximos eventos</span><strong id="metric-confirmed">0</strong><small>Reservas confirmadas</small></div></article>
+
+          <article class="metric-card"><span class="metric-icon gold">[]</span><div><span>Eventos neste ms</span><strong id="metric-month">0</strong><small>Solicitacoes e reservas ativas</small></div></article>
+
+          <article class="metric-card"><span class="metric-icon purple">[]</span><div><span>Dias bloqueados</span><strong id="metric-blocked">0</strong><small>Indisponiveis para locacao</small></div></article>
+
+        </div>
+
+        <div class="overview-grid">
+
+          <section class="content-card"><div class="section-heading"><div><h2>Proximas reservas</h2><p>Eventos confirmados mais proximos</p></div><button class="text-button" data-go="events" type="button">Ver todos ></button></div><div id="upcoming-list" class="upcoming-list"></div></section>
+
+          <section class="content-card leads-card"><div class="section-heading"><div><h2>Leads para atender</h2><p>Consultas aguardando contato</p></div><button class="text-button" data-go="events" type="button">Abrir caixa de entrada &gt;</button></div><div id="recent-leads" class="recent-leads"></div></section>
+          <section class="content-card quick-actions"><div class="section-heading"><div><h2>Acesso rápido</h2><p>Atalhos para tarefas comuns</p></div></div><button data-go="calendar" type="button"><span>[]</span><span><strong>Organizar agenda</strong><small>Bloquear ou liberar datas</small></span><b>></b></button><button id="add-event-quick" type="button"><span>+</span><span><strong>Cadastrar uma reserva</strong><small>Adicionar evento confirmado</small></span><b>></b></button><button data-go="finance" type="button"><span>R$</span><span><strong>Acessar financeiro</strong><small>Opcional: receitas e despesas</small></span><b>></b></button></section>
+
+        </div>
+
+      </section>
+
+
+
+      <section id="view-events" class="view-section" hidden>
+
+        <div class="section-heading page-section-heading"><div><h2>Eventos e solicitacoes</h2><p>Atenda os contatos, acompanhe as reservas e anote os detalhes importantes.</p></div><button id="add-event-button" class="primary-button" type="button">+ Cadastrar evento</button></div>
+
+        <div class="toolbar"><label class="search-box">* <input id="event-search" type="search" placeholder="Buscar por nome, telefone ou evento"></label><select id="status-filter" aria-label="Filtrar por status"><option value="">Todos os status</option><option>Nova</option><option>Em atendimento</option><option>Aguardando retorno</option><option>Confirmado</option><option>Cancelado</option></select><button id="export-events" class="secondary-button" type="button">v Exportar CSV</button></div>
+
+        <div class="table-wrap content-card"><table><thead><tr><th>Cliente / contato</th><th>Evento</th><th>Data e periodo</th><th>Pessoas</th><th>Status</th><th></th></tr></thead><tbody id="events-table"></tbody></table><div id="empty-events" class="empty-state" hidden><span>[]</span><strong>Nenhum evento por aqui ainda</strong><p>As solicitacoes enviadas pelo site aparecerao nesta lista.</p></div></div>
+
+      </section>
+
+
+
+      <section id="view-calendar" class="view-section" hidden>
+
+        <div class="section-heading page-section-heading"><div><h2>Agenda e disponibilidade</h2><p>Clique em uma data para bloquear ou liberar o espaco para locacao.</p></div><div class="legend"><span><i class="available-dot"></i>Disponivel</span><span><i class="blocked-dot"></i>Bloqueada</span><span><i class="reserved-dot"></i>Reserva confirmada</span></div></div>
+
+        <div class="calendar-card content-card"><div class="calendar-controls"><button id="previous-month" class="icon-button" type="button" aria-label="Ms anterior"><</button><h2 id="month-label"></h2><button id="next-month" class="icon-button" type="button" aria-label="Prximo ms">></button></div><div id="calendar" class="calendar" aria-label="Calendário de disponibilidade"></div><p id="calendar-status" class="status" role="status" aria-live="polite"></p></div>
+
+        <div class="content-card calendar-help"><strong>Como funciona</strong><p>Dias em vermelho esto bloqueados. Datas com uma reserva confirmada aparecem em verde. Uma solicitacao nova ainda precisa ser confirmada com o cliente.</p></div>
+
+      </section>
+
+
+
+      <section id="view-finance" class="view-section" hidden>
+
+        <div class="section-heading page-section-heading"><div><h2>Financeiro</h2><p>AArea opcional. Use se quiser acompanhar entradas, pagamentos e despesas do espaco.</p></div><button id="add-transaction" class="primary-button" type="button">+ Lancamento</button></div>
+
+        <div class="finance-summary"><article class="finance-card income"><span>Receitas recebidas</span><strong id="finance-income">R$ 0,00</strong><small>Pagamentos registrados</small></article><article class="finance-card pending"><span>Valores a receber</span><strong id="finance-pending">R$ 0,00</strong><small>Pagamentos pendentes</small></article><article class="finance-card expense"><span>Despesas</span><strong id="finance-expense">R$ 0,00</strong><small>Despesas lanadas</small></article><article class="finance-card balance"><span>Saldo registrado</span><strong id="finance-balance">R$ 0,00</strong><small>Recebido menos despesas</small></article></div>
+
+        <div class="toolbar"><select id="finance-month-filter" aria-label="Filtrar por ms"><option value="">Todos os meses</option></select><select id="finance-type-filter" aria-label="Filtrar tipo"><option value="">Receitas e despesas</option><option value="Receita">Receitas</option><option value="Despesa">Despesas</option></select><button id="export-finance" class="secondary-button" type="button">v Exportar CSV</button></div>
+
+        <div class="table-wrap content-card"><table><thead><tr><th>Descricao</th><th>Evento</th><th>Tipo</th><th>Vencimento</th><th>Valor</th><th>Situacao</th><th></th></tr></thead><tbody id="finance-table"></tbody></table><div id="empty-finance" class="empty-state"><span>R$</span><strong>Nenhum lancamento cadastrado</strong><p>O financeiro  opcional. Adicione receitas ou despesas somente se for util para sua organizacao.</p><button class="primary-button" data-transaction="true" type="button">Criar primeiro lancamento</button></div></div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+
+  <dialog id="event-dialog" class="modal"><form id="event-form" method="dialog"><div class="modal-heading"><div><p class="eyebrow">Centro de controle</p><h2 id="event-dialog-title">Cadastrar evento</h2></div><button class="close-modal" type="button" data-close="event-dialog" aria-label="Fechar">x</button></div><input type="hidden" name="id"><div class="form-grid"><label>Nome do cliente<input name="name" required maxlength="100"></label><label>Telefone / WhatsApp<input name="phone" required maxlength="40"></label><label>Tipo de evento<select name="type" required><option>Aniversário</option><option>Casamento</option><option>Chá de beb / revelacao</option><option>Confraternizacao</option><option>Evento corporativo</option><option>Festa particular</option></select></label><label>Data<input name="date" type="date" required></label><label>Periodo<select name="period" required><option>Diurno</option><option>Noturno</option><option>Dia completo</option></select></label><label>Quantidade de convidados<input name="guests" type="number" min="1" max="150" required></label><label>Mesas e cadeiras<select name="tables"><option>Nao preciso</option><option>Quero incluir como opcional</option></select></label><label>Status<select name="status"><option>Nova</option><option>Em atendimento</option><option>Aguardando retorno</option><option>Confirmado</option><option>Cancelado</option></select><small>Lead do site fica pendente. Bloqueie a data manualmente na agenda após confirmar a reserva.</small></label><label class="full-width">Observacoes<textarea name="notes" rows="3" placeholder="Preferencias, detalhes da conversa, condicoes combinadas..."></textarea></label></div><div class="modal-actions"><button class="secondary-button" type="button" data-close="event-dialog">Cancelar</button><button class="primary-button" type="submit">Salvar evento</button></div></form></dialog>
+
+
+
+  <dialog id="transaction-dialog" class="modal"><form id="transaction-form" method="dialog"><div class="modal-heading"><div><p class="eyebrow">Financeiro opcional</p><h2>Novo lancamento</h2></div><button class="close-modal" type="button" data-close="transaction-dialog" aria-label="Fechar">x</button></div><div class="form-grid"><label>Tipo<select name="type"><option>Receita</option><option>Despesa</option></select></label><label>Descricao<input name="description" required maxlength="120" placeholder="Ex.: sinal da locacao"></label><label>Evento relacionado<select name="eventId" id="transaction-event"><option value="">Sem evento vinculado</option></select></label><label>Valor (R$)<input name="amount" type="number" min="0.01" step="0.01" required></label><label>Vencimento / data<input name="date" type="date" required></label><label>Situacao<select name="status"><option>Pendente</option><option>Pago</option></select></label><label class="full-width">Observacoes<textarea name="notes" rows="2" placeholder="Opcional"></textarea></label></div><div class="modal-actions"><button class="secondary-button" type="button" data-close="transaction-dialog">Cancelar</button><button class="primary-button" type="submit">Salvar lancamento</button></div></form></dialog>
+
+
+
+  <dialog id="event-detail-dialog" class="modal detail-modal"><div id="event-detail-content"></div></dialog>
+
+  <script src="/admin.js" defer></script>
+
+</body>
+
+</html>

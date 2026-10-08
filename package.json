@@ -1,0 +1,8 @@
+﻿{
+  "name": "duda-festas-eventos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site e centro de controle digital do Duda Festas e Eventos",
+  "scripts": { "start": "node server/index.js" },
+  "engines": { "node": ">=20" }
+}
