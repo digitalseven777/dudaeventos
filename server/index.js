@@ -228,6 +228,7 @@ function serveFile(response, file, contentType) {
     "/app.js": ["app.js", "text/javascript; charset=utf-8"], "/style.css": ["style.css", "text/css; charset=utf-8"],
     "/assets/logo-duda.svg": ["assets/logo-duda.svg", "image/svg+xml"], "/assets/favicon.svg": ["assets/favicon.svg", "image/svg+xml"],
     "/assets/hero-demonstracao.png": ["assets/hero-demonstracao.png", "image/png"],
+    "/assets/hero-local.jpg": ["assets/hero-local.jpg", "image/jpeg"],
     "/assets/galeria/salao-principal.jpg": ["assets/galeria/salao-principal.jpg", "image/jpeg"],
     "/assets/galeria/salao-coberto.jpg": ["assets/galeria/salao-coberto.jpg", "image/jpeg"],
     "/assets/galeria/churrasqueira.jpg": ["assets/galeria/churrasqueira.jpg", "image/jpeg"],
