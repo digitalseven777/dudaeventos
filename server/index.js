@@ -36,6 +36,9 @@ async function loadUnavailableDates() {
   const [manualDates, events] = await Promise.all([loadDates(), loadEvents()]);
   return [...new Set([...manualDates, ...events.filter((event) => event.status === "Confirmado").map((event) => event.date).filter(isValidDate)])].sort();
 }
+async function hasConfirmedReservation(date, exceptId = "") {
+  return (await loadEvents()).some((event) => event.status === "Confirmado" && event.date === date && event.id !== exceptId);
+}
 async function loadTransactions() { return store.getTransactions(); }
 function normalizeEvent(body) {
   if (!isRecord(body)) return null;
@@ -201,6 +204,7 @@ async function handleRequest(request, response) {
       if (!event) return send(response, 400, { error: "Confira os dados obrigatórios do evento." });
       if (body.status && !STATUSES.includes(body.status)) return send(response, 400, { error: "Status inválido." });
       const record = { id: crypto.randomUUID(), ...event, status: body.status || "Nova", notes: cleanText(body.notes, 3000), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), source: "Cadastro manual" };
+      if (await hasConfirmedReservation(record.date)) return send(response, 409, { error: "Já existe uma reserva confirmada nessa data. Escolha outra data." });
       await store.createEvent(record);
 
       return send(response, 201, { event: record });
@@ -258,6 +262,7 @@ async function handleRequest(request, response) {
       if (Object.hasOwn(body, "status")) { if (!STATUSES.includes(body.status)) return send(response, 400, { error: "Status inválido." }); updated.status = body.status; }
       if (Object.hasOwn(body, "notes")) updated.notes = cleanText(body.notes, 3000);
       if (!updated.name || !updated.phone || !updated.type || !updated.period || !updated.tables) return send(response, 400, { error: "Preencha os dados obrigatórios do evento." });
+      if (await hasConfirmedReservation(updated.date, existing.id)) return send(response, 409, { error: "Já existe uma reserva confirmada nessa data. Escolha outra data." });
       updated.updatedAt = new Date().toISOString();
       if (!await store.updateEvent(eventMatch[1], updated)) return send(response, 404, { error: "Evento não encontrado." });
       return send(response, 200, { event: updated });

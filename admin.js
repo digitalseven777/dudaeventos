@@ -14,6 +14,31 @@ let blockedDates = new Set();
 let events = [];
 let transactions = [];
 let savingDate = false;
+let eventDateMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let editingEventId = "";
+
+function renderEventDatePicker() {
+  const form = document.querySelector("#event-form"); const field = form.elements.namedItem("date");
+  const monthLabel = document.querySelector("#event-date-month"); const dateGrid = document.querySelector("#event-date-calendar");
+  const year = eventDateMonth.getFullYear(); const month = eventDateMonth.getMonth();
+  monthLabel.textContent = eventDateMonth.toLocaleDateString("pt-BR", { month: "long", year: "numeric" }); dateGrid.replaceChildren();
+  for (let blank = 0; blank < new Date(year, month, 1).getDay(); blank++) { const spacer = document.createElement("span"); spacer.setAttribute("aria-hidden", "true"); dateGrid.append(spacer); }
+  const currentDate = field.dataset.date || ""; const today = new Date(); today.setHours(0, 0, 0, 0);
+  for (let day = 1; day <= new Date(year, month + 1, 0).getDate(); day++) {
+    const key = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const otherReservation = events.some((item) => item.status === "Confirmado" && item.date === key && item.id !== editingEventId);
+    const unavailable = blockedDates.has(key) || otherReservation;
+    const button = document.createElement("button"); button.type = "button"; button.className = "event-date-day"; button.textContent = String(day);
+    button.disabled = (new Date(year, month, day) < today && currentDate !== key) || (unavailable && currentDate !== key);
+    button.setAttribute("aria-label", `${day} de ${eventDateMonth.toLocaleDateString("pt-BR", { month: "long" })}${otherReservation ? ", reserva confirmada" : blockedDates.has(key) ? ", bloqueada" : ""}`);
+    if (otherReservation) button.classList.add("reserved"); else if (blockedDates.has(key)) button.classList.add("blocked");
+    if (currentDate === key) button.classList.add("selected");
+    button.addEventListener("click", () => { field.dataset.date = key; field.value = formatDate(key); renderEventDatePicker(); }); dateGrid.append(button);
+  }
+}
+
+document.querySelector("#event-date-prev").addEventListener("click", () => { eventDateMonth = new Date(eventDateMonth.getFullYear(), eventDateMonth.getMonth() - 1, 1); renderEventDatePicker(); });
+document.querySelector("#event-date-next").addEventListener("click", () => { eventDateMonth = new Date(eventDateMonth.getFullYear(), eventDateMonth.getMonth() + 1, 1); renderEventDatePicker(); });
 
 async function api(url, options = {}) {
   const response = await fetch(url, { credentials: "same-origin", ...options });
@@ -146,8 +171,12 @@ async function refreshSummary() { try { updateDashboard(await api("/api/admin/su
 
 function openEventForm(event = null) {
   const dialog = document.querySelector("#event-dialog"); const form = document.querySelector("#event-form"); form.reset();
+  const dateField = form.elements.namedItem("date"); delete dateField.dataset.date; editingEventId = event?.id || "";
   document.querySelector("#event-dialog-title").textContent = event ? "Editar evento" : "Cadastrar evento";
-  for (const [key, value] of Object.entries(event || {})) { const field = form.elements.namedItem(key); if (field) field.value = value ?? ""; }
+  for (const [key, value] of Object.entries(event || {})) { const field = form.elements.namedItem(key); if (field) field.value = key === "date" ? formatDate(value) : value ?? ""; }
+  if (event?.date) dateField.dataset.date = event.date;
+  const selectedDate = event?.date ? new Date(`${event.date}T12:00:00`) : new Date();
+  eventDateMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1); renderEventDatePicker();
   if (!event) form.elements.namedItem("status").value = "Nova";
   dialog.showModal();
 }
@@ -257,8 +286,9 @@ document.querySelector("#add-transaction").addEventListener("click", () => docum
 document.querySelector("#export-events").addEventListener("click", () => downloadFile("/api/admin/export"));
 document.querySelector("#export-finance").addEventListener("click", () => downloadFile("/api/admin/finance/export"));
 document.querySelector("#event-form").addEventListener("submit", async (event) => {
-  event.preventDefault(); const form = event.currentTarget; const data = Object.fromEntries(new FormData(form)); const id = data.id; delete data.id; data.guests = Number(data.guests);
-  try { if (id) await api(`/api/admin/events/${encodeURIComponent(id)}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); else await api("/api/admin/events", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); await reloadEvents(); document.querySelector("#event-dialog").close(); showMessage(id ? "Evento atualizado." : "Registro salvo. Leads e alteracoes de status nao bloqueiam a data; faca o bloqueio manual na agenda."); }
+  event.preventDefault(); const form = event.currentTarget; const data = Object.fromEntries(new FormData(form)); const id = data.id; delete data.id; data.date = form.elements.namedItem("date").dataset.date || ""; data.guests = Number(data.guests);
+  if (!data.date) { showMessage("Escolha uma data disponível no calendário.", true); return; }
+  try { if (id) await api(`/api/admin/events/${encodeURIComponent(id)}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); else await api("/api/admin/events", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); await reloadEvents(); document.querySelector("#event-dialog").close(); showMessage(id ? "Evento atualizado." : "Registro salvo."); }
   catch (error) { showMessage(error.message, true); }
 });
 document.querySelector("#transaction-form").addEventListener("submit", (event) => { event.preventDefault(); addTransaction(event.currentTarget); });
