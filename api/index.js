@@ -1,1 +1,3 @@
-module.exports = require("../server/index");
+const handler = require("../server/index");
+
+module.exports = (request, response) => handler(request, response);
