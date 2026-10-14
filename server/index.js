@@ -279,6 +279,8 @@ async function handleRequest(request, response) {
     return send(response, 404, { error: "Não encontrado." });
   }
   if (url.pathname === "/album" || url.pathname === "/album.html") return serveFile(response, path.join(ROOT, "album.html"), "text/html; charset=utf-8");
+  if (url.pathname === "/obrigado" || url.pathname === "/obrigado.html") return serveFile(response, path.join(ROOT, "obrigado.html"), "text/html; charset=utf-8");
+  if (url.pathname === "/obrigado.js") return serveFile(response, path.join(ROOT, "obrigado.js"), "text/javascript; charset=utf-8");
   if (url.pathname === "/admin") return serveFile(response, path.join(ROOT, "admin.html"), "text/html; charset=utf-8");
   if (url.pathname === "/admin.css" || url.pathname === "/admin.js") return serveFile(response, path.join(ROOT, url.pathname.slice(1)), url.pathname.endsWith(".css") ? "text/css; charset=utf-8" : "text/javascript; charset=utf-8");
   const publicFiles = {

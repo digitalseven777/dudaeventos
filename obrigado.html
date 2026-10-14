@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sua consulta foi registrada pelo Duda Festas e Eventos.">
+  <meta name="theme-color" content="#f7f4ef">
+  <title>Solicitação recebida | Duda Festas e Eventos</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .confirmation-page{min-height:100vh;display:grid;place-items:center;padding:28px 0}
+    .confirmation-card{width:min(620px,100%);padding:clamp(28px,6vw,58px);text-align:center;background:var(--white);border:2px solid var(--yellow);border-radius:22px;box-shadow:0 18px 55px #21150f12}
+    .confirmation-mark{width:58px;height:58px;display:grid;place-items:center;margin:0 auto 20px;border-radius:50%;background:#e9f4ed;color:#347a4c;font-size:30px;font-weight:700}
+    .confirmation-card h1{margin:0 0 12px;font:700 clamp(30px,6vw,42px)/1.05 Georgia,serif}
+    .confirmation-card>p:not(.section-label){max-width:430px;margin:0 auto 24px;color:var(--muted)}
+    .confirmation-actions{display:grid;gap:12px;max-width:360px;margin:auto}
+    .confirmation-actions .btn{width:100%}
+    .confirmation-back{color:var(--red-dark);font-size:13px;font-weight:700}
+  </style>
+</head>
+<body>
+  <main class="confirmation-page container">
+    <section class="confirmation-card" aria-labelledby="confirmation-title">
+      <div class="confirmation-mark" aria-hidden="true">✓</div>
+      <p class="section-label">Duda Festas e Eventos</p>
+      <h1 id="confirmation-title">Solicitação recebida!</h1>
+      <p>Seu contato foi registrado. Continue para o WhatsApp para enviar sua mensagem e conversar com nossa equipe sobre a disponibilidade.</p>
+      <div class="confirmation-actions">
+        <a id="continue-whatsapp" class="btn btn-gold" href="/#agendamento">Continuar para o WhatsApp</a>
+        <a class="confirmation-back" href="/">Voltar ao site</a>
+      </div>
+    </section>
+  </main>
+  <script src="/obrigado.js"></script>
+</body>
+</html>

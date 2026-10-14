@@ -100,6 +100,12 @@ Quantidade aproximada de convidados: ${request.guests}
 Mesas e cadeiras: ${request.tables}
 
 Gostaria de confirmar se a data está disponível e receber informações sobre valores, condições de locação e próximos passos. Obrigado(a)!`;
-  status.textContent = "Consulta registrada! Abrindo o WhatsApp para você…";
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+  status.textContent = "Consulta registrada! Abrindo a confirmação…";
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  try {
+    sessionStorage.setItem("duda-pending-whatsapp", whatsappUrl);
+    window.location.assign("/obrigado");
+  } catch {
+    window.location.assign(whatsappUrl);
+  }
 });
