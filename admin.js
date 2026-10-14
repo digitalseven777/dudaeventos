@@ -59,6 +59,7 @@ async function enterDashboard() {
 function updateDashboard(summary) {
   document.querySelector("#metric-new").textContent = summary.newCount || 0;
   document.querySelector("#metric-confirmed").textContent = summary.confirmedCount || 0;
+  document.querySelector("#metric-leads-month").textContent = summary.leadsThisMonth || 0;
   document.querySelector("#metric-month").textContent = summary.thisMonth || 0;
   document.querySelector("#metric-blocked").textContent = summary.blockedCount || 0;
   const badge = document.querySelector("#new-badge");

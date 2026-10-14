@@ -32,6 +32,10 @@ function isValidDate(date) {
 }
 async function loadDates() { return (await store.getDates()).filter(isValidDate).sort(); }
 async function loadEvents() { return store.getEvents(); }
+async function loadUnavailableDates() {
+  const [manualDates, events] = await Promise.all([loadDates(), loadEvents()]);
+  return [...new Set([...manualDates, ...events.filter((event) => event.status === "Confirmado").map((event) => event.date).filter(isValidDate)])].sort();
+}
 async function loadTransactions() { return store.getTransactions(); }
 function normalizeEvent(body) {
   if (!isRecord(body)) return null;
@@ -137,7 +141,7 @@ async function handleRequest(request, response) {
   }
   const secureCookie = process.env.NODE_ENV === "production" || Boolean(request.socket.encrypted) || request.headers["x-forwarded-proto"] === "https" ? "; Secure" : "";
 
-  if (url.pathname === "/api/availability" && request.method === "GET") return send(response, 200, { blocked: await loadDates() });
+  if (url.pathname === "/api/availability" && request.method === "GET") return send(response, 200, { blocked: await loadUnavailableDates() });
   if (url.pathname === "/api/events" && request.method === "POST") {
     const addressKey = crypto.createHmac("sha256", SESSION_SECRET).update(clientAddress(request)).digest("hex");
     if (!await store.allowPublicSubmission(addressKey, Date.now(), PUBLIC_SUBMISSION_WINDOW_MS, PUBLIC_SUBMISSION_MAX_ATTEMPTS)) return send(response, 429, { error: "Muitas consultas em pouco tempo. Tente novamente mais tarde." });
@@ -145,7 +149,7 @@ async function handleRequest(request, response) {
     try { body = await readBody(request); } catch { return send(response, 400, { error: "Dados inválidos." }); }
     const event = publicEvent(body);
     if (!event) return send(response, 400, { error: "Confira os dados enviados." });
-    if ((await loadDates()).includes(event.date)) return send(response, 409, { error: "Esta data não está disponível. Escolha outra data." });
+    if ((await loadUnavailableDates()).includes(event.date)) return send(response, 409, { error: "Esta data não está disponível. Escolha outra data." });
     const record = { id: crypto.randomUUID(), ...event, status: "Nova", notes: "", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), source: "Site" };
     await store.createEvent(record);
     return send(response, 201, { id: record.id, message: "Solicitação registrada." });
@@ -182,10 +186,11 @@ async function handleRequest(request, response) {
       return send(response, 200, {
         total: events.length, newCount: events.filter((item) => item.status === "Nova").length,
         confirmedCount: events.filter((item) => item.status === "Confirmado" && item.date >= today).length,
-        thisMonth: events.filter((item) => item.date.startsWith(month) && item.status !== "Cancelado").length,
+        leadsThisMonth: events.filter((item) => item.source === "Site" && item.createdAt?.startsWith(month)).length,
+        thisMonth: events.filter((item) => item.date.startsWith(month) && item.status === "Confirmado").length,
         nextEvents: events.filter((item) => item.status === "Confirmado" && item.date >= today).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 5),
         recentLeads: events.filter((item) => item.status === "Nova").slice(0, 5),
-        blockedCount: (await loadDates()).length,
+        blockedCount: (await loadUnavailableDates()).length,
       });
     }
     if (url.pathname === "/api/admin/events" && request.method === "GET") return send(response, 200, { events: (await loadEvents()).sort((a, b) => b.createdAt.localeCompare(a.createdAt)), statuses: STATUSES });
