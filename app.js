@@ -9,29 +9,59 @@ navigation.querySelectorAll("a").forEach((link) => link.addEventListener("click"
 const dateField = document.querySelector('[name="data"]');
 const availabilityNotice = document.querySelector(".date-availability");
 let blockedDates = new Set();
-const availabilityLoaded = fetch("/api/availability").then((response) => response.json()).then(({ blocked }) => {
+const today = new Date(); today.setHours(0, 0, 0, 0);
+let calendarMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+const calendar = document.querySelector("#date-calendar");
+const monthLabel = document.querySelector("#date-month");
+function isoDate(year, month, day) { return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`; }
+function renderDateCalendar() {
+  const year = calendarMonth.getFullYear(); const month = calendarMonth.getMonth();
+  monthLabel.textContent = calendarMonth.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+  calendar.replaceChildren();
+  for (let blank = 0; blank < new Date(year, month, 1).getDay(); blank++) { const spacer = document.createElement("span"); spacer.setAttribute("aria-hidden", "true"); calendar.append(spacer); }
+  const days = new Date(year, month + 1, 0).getDate();
+  for (let day = 1; day <= days; day++) {
+    const date = isoDate(year, month, day); const button = document.createElement("button");
+    button.type = "button"; button.textContent = String(day); button.className = "date-day";
+    button.disabled = new Date(year, month, day) < today || blockedDates.has(date);
+    button.setAttribute("aria-label", `${day} de ${calendarMonth.toLocaleDateString("pt-BR", { month: "long" })}${blockedDates.has(date) ? ", indisponível" : ""}`);
+    if (dateField.dataset.date === date) { button.classList.add("selected"); button.setAttribute("aria-pressed", "true"); }
+    button.addEventListener("click", () => {
+      dateField.dataset.date = date;
+      dateField.value = new Date(year, month, day).toLocaleDateString("pt-BR");
+      availabilityNotice.textContent = "Data sujeita à confirmação da equipe.";
+      availabilityNotice.classList.remove("unavailable"); renderDateCalendar();
+    });
+    calendar.append(button);
+  }
+  document.querySelector("#date-prev").disabled = year === today.getFullYear() && month <= today.getMonth();
+}
+document.querySelector("#date-prev").addEventListener("click", () => { calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1); renderDateCalendar(); });
+document.querySelector("#date-next").addEventListener("click", () => { calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1); renderDateCalendar(); });
+renderDateCalendar();
+const availabilityLoaded = fetch("/api/availability", { cache: "no-store" }).then((response) => response.json()).then(({ blocked }) => {
   blockedDates = new Set(blocked);
+  availabilityNotice.textContent = "Datas indisponíveis aparecem desativadas.";
+  renderDateCalendar();
   return blockedDates;
-}).catch(() => blockedDates);
-dateField.min = new Date().toISOString().split("T")[0];
-dateField.addEventListener("change", () => {
-  const unavailable = blockedDates.has(dateField.value);
-  availabilityNotice.textContent = unavailable ? "Esta data está indisponível. Escolha outra data." : "Data sujeita à confirmação da equipe.";
-  availabilityNotice.classList.toggle("unavailable", unavailable);
-});
+}).catch(() => { availabilityNotice.textContent = "Não foi possível carregar as datas ocupadas. A disponibilidade será conferida ao enviar."; return blockedDates; });
 document.querySelector("#agendamento").addEventListener("submit", async (event) => {
   event.preventDefault();
   await availabilityLoaded;
   const form = event.currentTarget;
   const status = form.querySelector(".form-status");
   const data = new FormData(form);
-  if (blockedDates.has(data.get("data"))) {
+  if (!dateField.dataset.date) {
+    status.textContent = "Escolha uma data disponível no calendário.";
+    return;
+  }
+  if (blockedDates.has(dateField.dataset.date)) {
     status.textContent = "Essa data não está disponível. Escolha outra data ou fale conosco pelo WhatsApp.";
     return;
   }
-  const eventDate = new Date(`${data.get("data")}T12:00:00`).toLocaleDateString("pt-BR");
+  const eventDate = new Date(`${dateField.dataset.date}T12:00:00`).toLocaleDateString("pt-BR");
   const request = {
-    name: data.get("nome"), phone: data.get("telefone"), type: data.get("evento"), date: data.get("data"),
+    name: data.get("nome"), phone: data.get("telefone"), type: data.get("evento"), date: dateField.dataset.date,
     period: data.get("periodo"), guests: data.get("convidados"), tables: data.get("mesas"),
   };
   status.textContent = "Registrando sua consulta…";
@@ -43,6 +73,9 @@ document.querySelector("#agendamento").addEventListener("submit", async (event) 
     if (!response.ok) {
       if (response.status === 409) {
         blockedDates.add(request.date);
+        dateField.value = "";
+        delete dateField.dataset.date;
+        renderDateCalendar();
         availabilityNotice.textContent = result.error;
         availabilityNotice.classList.add("unavailable");
       }
